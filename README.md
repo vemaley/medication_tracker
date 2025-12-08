@@ -36,14 +36,16 @@ You can use these services in automations or dashboard buttons:
 * `medication_tracker.add_stock`: Adds a specific amount to the stock (e.g., when refilling).
 
 ## Dashboard Example (Mushroom/Lovelace)
-Here is a clean card configuration to visualize your tracker:
+Here is a clean card configuration. 
+**Note:** Replace `metformin` with the name of the medication you added in the setup.
 
 ```yaml
 type: entities
-title: Metformin Tracker
+title: My Medication Tracker
 show_header_toggle: false
 entities:
-  - entity: number.metformin_current_stock
+  # REPLACE 'metformin' WITH YOUR MEDICATION NAME
+  - entity: number.metformin_stock
     name: Current Stock
     icon: mdi:pill
   - entity: sensor.metformin_days_remaining
@@ -56,6 +58,8 @@ entities:
     action_name: TAKE
     service: medication_tracker.take_dose
     service_data:
-      entity_id: number.metformin_current_stock
+      # MAKE SURE THIS MATCHES YOUR ENTITY ID
+      entity_id: number.metformin_stock
+
 
 
