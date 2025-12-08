@@ -1,7 +1,7 @@
 {
   "domain": "medication_tracker",
   "name": "Medication Stock Tracker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "config_flow": true,
   "documentation": "https://github.com/vemaley/medication_tracker",
   "codeowners": ["@vemaley"],
