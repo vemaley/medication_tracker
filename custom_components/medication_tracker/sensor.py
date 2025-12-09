@@ -25,7 +25,6 @@ async def async_setup_entry(
 ) -> None:
     """Set up the Medication Days Remaining sensor entity."""
     try:
-        # Merge data and options to support dynamic updates
         config = {**config_entry.data, **config_entry.options}
         
         base_unique_id = config_entry.entry_id
@@ -60,7 +59,6 @@ class MedicationDaysRemainingSensor(SensorEntity):
         self._name = config.get("name", "Medication")
         self._number_unique_id = number_unique_id 
         
-        # Calculate daily consumption (decimals supported)
         pills_per_dose = float(config.get("pills_per_dose", 1.0))
         doses_per_day = float(config.get("doses_per_day", 1.0))
         
@@ -71,7 +69,9 @@ class MedicationDaysRemainingSensor(SensorEntity):
         self._current_stock = None
         
         self._attr_name = "Days Remaining"
-        self._attr_unit_of_measurement = 'd'
+        
+        # FIXED: Use _attr_native_unit_of_measurement to resolve "None" unit error
+        self._attr_native_unit_of_measurement = 'd' 
         self._attr_icon = "mdi:calendar-clock"
         self._attr_device_class = SensorDeviceClass.DURATION
         
@@ -114,7 +114,6 @@ class MedicationDaysRemainingSensor(SensorEntity):
 
     @callback
     def _setup_stock_listener(self, *args) -> None:
-        """Attempt to find the number entity and subscribe to it."""
         entity_registry = er.async_get(self.hass)
         number_entity_id = entity_registry.async_get_entity_id(
             "number", DOMAIN, self._number_unique_id
@@ -125,7 +124,6 @@ class MedicationDaysRemainingSensor(SensorEntity):
             if self._retry_count > 10:
                 _LOGGER.debug(f"Stop retrying to link {self._name} after 10 attempts. Entity not ready.")
                 return
-
             self._remove_listener = async_call_later(self.hass, 5.0, self._setup_stock_listener)
             return
 
