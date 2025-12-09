@@ -45,26 +45,75 @@ Here is a clean card configuration.
 **Note:** Replace `metformin` with the name of the medication you added in the setup.
 
 ```yaml
-type: entities
-title: My Medication Tracker
-show_header_toggle: false
-entities:
-  # REPLACE 'metformin' WITH YOUR MEDICATION NAME
-  - entity: number.metformin_stock
-    name: Current Stock
+## 🎨 Dashboard Example (Mushroom Cards)
+This integration works beautifully with [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Here is a complete card configuration that shows stock status, history, and quick actions.
+
+**Features:**
+* **Dynamic Icon Color:** Turns red when stock is low (< 7 days).
+* **Smart History:** Shows "Last taken: X minutes ago".
+* **Quick Actions:** One-tap buttons to take a dose or add a refill.
+
+```yaml
+type: vertical-stack
+cards:
+  # --- MAIN STATUS CARD ---
+  - type: custom:mushroom-template-card
+    primary: My Medication
+    secondary: >
+      {{ states('number.my_medication_stock') }} tablets left 
+      ({{ states('sensor.my_medication_days_remaining') }} days)
     icon: mdi:pill
-  - entity: sensor.metformin_days_remaining
-    name: Days Supply
-    icon: mdi:calendar-clock
-  - type: divider
-  - type: call-service
-    name: Take Dose
-    icon: mdi:check-circle-outline
-    action_name: TAKE
-    service: medication_tracker.take_dose
-    service_data:
-      # MAKE SURE THIS MATCHES YOUR ENTITY ID
-      entity_id: number.metformin_stock
+    icon_color: >
+      {% if states('sensor.my_medication_days_remaining') | float(0) <= 7 %} red
+      {% else %} green
+      {% endif %}
+    tap_action:
+      action: more-info
+      entity: number.my_medication_stock
+
+  # --- ACTION ROW ---
+  - type: horizontal-stack
+    cards:
+      # 1. HISTORY
+      - type: custom:mushroom-template-card
+        primary: Last Taken
+        secondary: >
+          {% set last = state_attr('number.my_medication_stock', 'last_taken') %}
+          {% if last %} {{ relative_time(last) }} ago
+          {% else %} Never {% endif %}
+        icon: mdi:history
+        icon_color: blue
+        layout: vertical
+        tap_action:
+          action: none
+
+      # 2. TAKE DOSE BUTTON
+      - type: custom:mushroom-template-card
+        primary: Take Dose
+        secondary: Record usage
+        icon: mdi:check-circle-outline
+        icon_color: teal
+        layout: vertical
+        tap_action:
+          action: call-service
+          service: medication_tracker.take_dose
+          service_data:
+            entity_id: number.my_medication_stock
+
+      # 3. ADD STOCK BUTTON (Set 'amount' to your pack size)
+      - type: custom:mushroom-template-card
+        primary: Add Stock
+        secondary: +30 tabs
+        icon: mdi:plus-box-outline
+        icon_color: green
+        layout: vertical
+        tap_action:
+          action: call-service
+          service: medication_tracker.add_stock
+          service_data:
+            entity_id: number.my_medication_stock
+            amount: 30
+
 
 
 
