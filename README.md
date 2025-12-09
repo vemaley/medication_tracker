@@ -44,7 +44,6 @@ You can use these services in automations or dashboard buttons:
 Here is a clean card configuration. 
 **Note:** Replace `metformin` with the name of the medication you added in the setup.
 
-```yaml
 ## 🎨 Dashboard Example (Mushroom Cards)
 This integration works beautifully with [Mushroom Cards](https://github.com/piitaya/lovelace-mushroom). Here is a complete card configuration that shows stock status, history, and quick actions.
 
@@ -113,6 +112,7 @@ cards:
           service_data:
             entity_id: number.my_medication_stock
             amount: 30
+
 
 
 
