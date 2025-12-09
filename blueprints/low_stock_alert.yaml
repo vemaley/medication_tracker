@@ -35,5 +35,5 @@ action:
   - choose: []
     default: !input notify_device
     data:
-      title: "?? Medication Low"
+      title: "💊 Medication Low"
       message: "Warning: {{ state_attr(trigger.entity_id, 'friendly_name') }} is running low. Only {{ states(trigger.entity_id) }} days remaining."
