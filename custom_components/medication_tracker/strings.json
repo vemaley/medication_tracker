@@ -1,0 +1,43 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Would you like to add a single medication or create a group?",
+        "menu_options": {
+          "medication": "Add Medication",
+          "group": "Create Group"
+        }
+      },
+      "medication": {
+        "title": "Add Medication",
+        "description": "Configure your medication details."
+      },
+      "group": {
+        "title": "Create Group",
+        "description": "Select existing medications to group together."
+      },
+      "dosage": {
+        "title": "Dosage Configuration",
+        "description": "Set your dosage and refill settings."
+      },
+      "threshold": {
+        "title": "Low Stock Alerts",
+        "description": "When should we warn you?"
+      }
+    },
+    "error": {
+      "groups_not_editable": "Groups cannot be edited yet. Please delete and recreate if needed."
+    },
+    "abort": {
+      "already_configured": "This medication is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Medication",
+        "description": "Update your dosage, refill size, or alert thresholds."
+      }
+    }
+  }
+}
