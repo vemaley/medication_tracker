@@ -66,7 +66,15 @@ class MedicationStockNumber(NumberEntity, RestoreEntity):
         self._attr_mode = NumberMode.BOX
         self._attr_native_min_value = 0
         self._attr_native_max_value = 10000 
-        self._attr_native_step = 0.01 # Allow decimals
+        # Read step_value from config (default 0.01)
+        try:
+            step_val = float(config.get("step_value", 0.01))
+            if step_val <= 0:
+                step_val = 0.01
+        except (TypeError, ValueError):
+            step_val = 0.01
+
+        self._attr_native_step = step_val
         self._attr_unit_of_measurement = "tablets"
         self._attr_icon = "mdi:pill"
 
